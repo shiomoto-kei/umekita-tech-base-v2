@@ -54,6 +54,8 @@ window.addEventListener('DOMContentLoaded', () => {
                     recipeName: recipe.recipeName,
                     description: recipe.description,
                     steps: recipe.steps,
+                    rating: recipe.rating, // ★★★ この行を追加 ★★★
+                    rated_count: recipe.rated_count // ★★★ この行を追加 ★★★
                 });
                 
                 // 1.5秒待ってから結果画面へ遷移

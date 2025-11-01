@@ -117,24 +117,28 @@ app.get('/api/gacha', (req, res) => {
     // 例: /api/gacha?type=yami の場合、 req.query は { type: 'yami' } になります
     const gachaType = req.query.type;
 
+
+    
     let sql = ``; // 実行するSQL文を入れる変数を準備
     const params = []; // SQL文の ? に当てはめる値の配列を準備
 
     // --- 2. ガチャタイプに応じて実行するSQL文を切り替える ---
-    
+    // ★★★ 返すカラムを明示的に指定する ★★★
+    const columnsToSelect = `id, recipeName, description, steps, rating, rated_count`;
+
     if (gachaType === 'legend') {
         // ★「伝説のガチャ」の場合★
-        // rating が 4.0 以上のレシピだけを対象にします
         console.log('伝説のガチャが引かれました');
-        sql = `SELECT * FROM recipes WHERE rating >= ? ORDER BY RANDOM() LIMIT 1;`;
-        params.push(4.0); // ? の部分に 4.0 を当てはめる
+        // ★★★ SELECT * を SELECT columnsToSelect に変更 ★★★
+        sql = `SELECT ${columnsToSelect} FROM recipes WHERE rating >= ? ORDER BY RANDOM() LIMIT 1;`;
+        params.push(4.0); 
 
     } else {
         // ★「闇ガチャ」またはタイプ指定が無い場合★
-        // rating が 3.0 未満のレシピだけを対象にします
         console.log('闇ガチャが引かれました');
-        sql = `SELECT * FROM recipes WHERE rating < ? ORDER BY RANDOM() LIMIT 1;`;
-        params.push(3.0); // ? の部分に 3.0 を当てはめる
+        // ★★★ SELECT * を SELECT columnsToSelect に変更 ★★★
+        sql = `SELECT ${columnsToSelect} FROM recipes WHERE rating < ? ORDER BY RANDOM() LIMIT 1;`;
+        params.push(4.0); 
     }
 
     // --- 3. 決定したSQL文を実行する ---

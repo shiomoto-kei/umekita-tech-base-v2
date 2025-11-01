@@ -140,7 +140,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 const result = await saveResponse.json();
                 if (result.success) {
-                    alert('レシピがガチャに追加されました！');
+                    // ★★★ ここを修正 ★★★
+                    alert('評価を送信！\nあなたのレシピは「ガチャ」のラインナップに追加されました！'); 
+                    // ★★★ 修正ここまで ★★★
                     saveButton.disabled = true;
                     saveButton.textContent = '追加済み';
                 } else { throw new Error(result.error || '保存に失敗しました。'); }
