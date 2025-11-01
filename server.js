@@ -108,11 +108,60 @@ app.post('/api/generate-image', async (req, res) => {
     }
 });
 
-// 2. ガチャAPI (変更なし)
+
+// 2. ガチャAPI (★変更あり★)
 app.get('/api/gacha', (req, res) => {
-    const sql = `SELECT * FROM recipes ORDER BY RANDOM() LIMIT 1;`;
-    db.get(sql, [], (err, row) => {
-        if (err) { res.status(500).json({ error: err.message }); return; }
+    // --- 1. gacha.jsから送られてきたガチャタイプを取得 ---
+    
+    // req.query は、URLの ? 以降のパラメータ（クエリパラメータ）をオブジェクトとして保持しています
+    // 例: /api/gacha?type=yami の場合、 req.query は { type: 'yami' } になります
+    const gachaType = req.query.type;
+
+    let sql = ``; // 実行するSQL文を入れる変数を準備
+    const params = []; // SQL文の ? に当てはめる値の配列を準備
+
+    // --- 2. ガチャタイプに応じて実行するSQL文を切り替える ---
+    
+    if (gachaType === 'legend') {
+        // ★「伝説のガチャ」の場合★
+        // rating が 4.0 以上のレシピだけを対象にします
+        console.log('伝説のガチャが引かれました');
+        sql = `SELECT * FROM recipes WHERE rating >= ? ORDER BY RANDOM() LIMIT 1;`;
+        params.push(4.0); // ? の部分に 4.0 を当てはめる
+
+    } else {
+        // ★「闇ガチャ」またはタイプ指定が無い場合★
+        // rating が 3.0 未満のレシピだけを対象にします
+        console.log('闇ガチャが引かれました');
+        sql = `SELECT * FROM recipes WHERE rating < ? ORDER BY RANDOM() LIMIT 1;`;
+        params.push(3.0); // ? の部分に 3.0 を当てはめる
+    }
+
+    // --- 3. 決定したSQL文を実行する ---
+    
+    // db.get は、結果を1行だけ取得する命令です
+    // sql 変数（どちらかのSQL文）を実行し、
+    // params 配列（[4.0] または [3.0]）を ? に当てはめます
+    db.get(sql, params, (err, row) => {
+        if (err) {
+            console.error('ガチャAPI DBエラー:', err.message);
+            res.status(500).json({ error: err.message });
+            return;
+        }
+        
+        // もし row が undefined の場合（＝該当するレシピが無かった場合）
+        if (!row) {
+            if (gachaType === 'legend') {
+                // 伝説のレシピがまだDBに無い場合
+                res.status(404).json({ error: '伝説のレシピはまだ存在しないようです…' });
+            } else {
+                // 闇のレシピが（奇跡的に）存在しない場合
+                res.status(404).json({ error: 'おめでとうございます！闇は滅びました。' });
+            }
+            return;
+        }
+
+        // 成功：見つかったレシピ（row）をフロントエンドに送り返す
         res.json(row);
     });
 });
