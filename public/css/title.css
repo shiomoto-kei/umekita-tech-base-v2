@@ -1,6 +1,6 @@
-/* front/css/title.css */
+/* front/css/title.css (修正版) */
 
-/* ページの基本設定 */
+/* ページの基本設定 (変更なし) */
 body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -11,7 +11,7 @@ body {
     background-color: #f0f2f5;
 }
 
-/* スマートフォン風のメインコンテナ */
+/* スマートフォン風のメインコンテナ (変更なし) */
 .container {
     width: 375px;
     height: 720px;
@@ -26,69 +26,119 @@ body {
     box-sizing: border-box;
 }
 
-/* タイトルのスタイル */
+/* ★★★ タイトルのスタイル (ここから修正) ★★★ */
 .title {
     color: #00ffff;
     font-family: 'Orbitron', sans-serif;
     font-size: 2.8rem;
     font-weight: bold;
     text-shadow: 0 0 5px rgba(0, 255, 255, 0.7);
-    margin-top: 50px;
-    /* 上の余白を調整 */
-    margin-bottom: 70px;
-    /* 下の余白を調整 */
+    
+    /* ボタンを配置するスペースを作るため、マージンを減らす */
+    margin-top: 30px; 
+    margin-bottom: 40px; 
 }
 
 .title img {
-  width: 350px; /* 画像の幅を指定 */
-  height: auto; /* 高さは自動調整して縦横比を維持 */
+  width: 350px; 
+  height: auto;
   border: 2px solid rgba(0, 255, 255, 0.5);
   border-radius: 80px;
 }
+/* ★★★ 修正ここまで ★★★ */
 
-/* ボタンの共通スタイル */
+
+/* ★★★ ボタンの共通スタイル (ここから修正) ★★★ */
 .button {
-    width: 85%;
-    padding: 16px;
-    margin-bottom: 20px;
+    width: 90%; /* 少し幅を広げる */
+    
+    /* 高さを少し詰め、上下の余白を調整 */
+    padding: 12px 16px; 
+    margin-bottom: 15px; /* ボタン間の隙間を狭くする */
+    
     border-radius: 50px;
     font-size: 1.1rem;
     font-weight: 500;
     cursor: pointer;
     text-align: center;
     transition: all 0.3s ease;
-    background: transparent;
-    border: 2px solid #00ffff;
-    color: #00ffff;
-    font-family: 'Orbitron', sans-serif;
-    text-shadow: 0 0 5px rgba(0, 255, 255, 0.7);
+    border: 2px solid transparent; /* 枠線のためのスペースを確保 */
+    
+    /* 2行になっても高さが変わらないように */
+    line-height: 1.4; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-/* クリックした時の簡単なアニメーション */
+/* ボタン内の説明文 (<span>) のスタイル */
+.button span {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: #555;
+    margin-top: 2px;
+}
+
+.button:hover {
+    transform: scale(1.02); /* ホバーエフェクトを少し控えめに */
+}
+
 .button:active {
     transform: scale(0.98);
 }
+/* ★★★ 修正ここまで ★★★ */
 
-/* 1番目のボタン（紫） */
+
+/* --- 各ボタンの個別スタイル --- */
+
+/* 1. レシピを作る (変更なし) */
 #btn-1 {
-    border-color: #d8b4fe;
-    color: #d8b4fe;
-    text-shadow: 0 0 5px #d8b4fe;
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
 }
-#btn-1:hover:not(:disabled) {
-    background: #d8b4fe;
-    color: #0d1a2f;
-    box-shadow: 0 0 15px #d8b4fe;
+#btn-1 span {
+    color: #eee;
 }
 
-/* 2番目のボタン（緑） */
-#btn-2 {
-    border-color: #a7f3d0;
-    color: #a7f3d0;
-    text-shadow: 0 0 5px #a7f3d0;
+/* ★★★ 2. 闇ガチャ (ここから新規追加) ★★★ */
+.button-yami {
+    background-color: #f0f0f0;
+    color: #333;
+    border-color: #888;
 }
-#btn-2:hover:not(:disabled) {
-    background: #a7f3d0;
-    color: #0d1a2f;
-    box-shadow: 0 0 15px #a7f3d0;
+.button-yami:hover {
+    background-color: #e0e0e0;
+    border-color: #555;
+}
+.button-yami span {
+    color: #333;
+}
+
+/* ★★★ 3. 伝説のガチャ (新規追加) ★★★ */
+.button-legend {
+    background-color: #fff8e1; /* クリーム色 */
+    color: #d1a000; /* ゴールド */
+    border-color: #ffc107; /* ゴールドの枠線 */
+    font-weight: 700;
+}
+.button-legend:hover {
+    background-color: #ffecb3;
+}
+.button-legend span {
+    color: #b88f00;
+}
+
+/* ★★★ 4. 食材ガチャ (新規追加) ★★★ */
+.button-material {
+    background-color: #e6ffed; /* 薄い緑 */
+    color: #006837; /* 濃い緑 */
+    border-color: #28a745; /* 緑の枠線 */
+}
+.button-material:hover {
+    background-color: #c8e6c9;
+}
+.button-material span {
+    color: #006837;
 }

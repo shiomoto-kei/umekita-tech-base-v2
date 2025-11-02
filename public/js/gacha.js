@@ -45,25 +45,49 @@ window.addEventListener('DOMContentLoaded', () => {
             }
             const recipe = await response.json();
 
-            // --- 4. サーバーからの応答を処理する (ここは変更なし) ---
+            
             
             // 成功したら、結果をURLパラメータとして結果画面に渡す
             if (recipe) {
+                
+                // ★★★ 共通のパラメータ作成処理を先に定義 ★★★
                 const params = new URLSearchParams({
                     id: recipe.id,
                     recipeName: recipe.recipeName,
                     description: recipe.description,
                     steps: recipe.steps,
-                    rating: recipe.rating, // ★★★ この行を追加 ★★★
-                    rated_count: recipe.rated_count // ★★★ この行を追加 ★★★
+                    rating: recipe.rating,
+                    rated_count: recipe.rated_count
                 });
-                
-                // 1.5秒待ってから結果画面へ遷移
-                setTimeout(() => {
-                    window.location.href = `/amazing-cooking-screen.html?${params.toString()}`;
-                }, 1500);
+
+                // ★★★ 昇格フラグ(isUpgrade)で処理を分岐 ★★★
+                if (recipe.isUpgrade) {
+                    // --- 確定演出（昇格）の場合 ---
+                    console.log('★ サーバーから確変の予兆を受信！ ★');
+                    
+                    // GOGOランプの音を再生 (surotto.js から拝借)
+                    const gogoSound = new Audio('/sound/ziyagura-gako.mp3');
+                    gogoSound.play();
+                    
+                    // 激しくシェイクするアニメーションに切り替え (CSSで後ほど定義)
+                    gachaMachineImg.classList.remove('shake'); // 通常のshakeを消す
+                    gachaMachineImg.classList.add('upgrade-shake'); 
+                    
+                    // 特別な演出のため、少し長く待つ (2.5秒)
+                    setTimeout(() => {
+                        window.location.href = `/amazing-cooking-screen.html?${params.toString()}`;
+                    }, 2500); 
+
+                } else {
+                    // --- 通常の闇ガチャの場合 ---
+                    // 1.5秒待ってから結果画面へ遷移 (通常の 'shake' アニメーションは再生中)
+                    setTimeout(() => {
+                        window.location.href = `/amazing-cooking-screen.html?${params.toString()}`;
+                    }, 1500);
+                }
 
             } else {
+                // (変更なし: レシピが
                 alert('残念！何も出ませんでした...');
                 resetButton();
             }

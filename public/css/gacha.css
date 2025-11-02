@@ -76,4 +76,28 @@ body {
 
 .draw-button:active {
     transform: scale(0.97);
+}/* ★★★ 確定演出用のCSSを一番下に追加 ★★★ */
+
+/* 激しいシェイクと点滅 */
+.gacha-machine-img.upgrade-shake {
+    animation: upgrade-shake 0.2s ease-in-out both infinite;
+}
+
+/* 確定演出用のアニメーション定義 */
+@keyframes upgrade-shake {
+    0%, 100% {
+        /* 少し拡大し、明るく光らせる */
+        transform: scale(1.02) rotate(0);
+        filter: brightness(1.5) drop-shadow(0 0 10px #ffeb3b); /* ゴールドの影 */
+    }
+    25% {
+        transform: translate(-3px, -2px) rotate(-1deg);
+    }
+    50% {
+        transform: scale(1.0) rotate(0);
+        filter: brightness(1.0) drop-shadow(0 0 0px #ffeb3b);
+    }
+    75% {
+        transform: translate(3px, 2px) rotate(1deg);
+    }
 }
